@@ -1,6 +1,40 @@
+
+import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import {  IoLogoFacebook, IoLogoInstagram, IoLogoTwitter } from "react-icons/io5";
+
 function App() {
+  
+  const [email, setEmail] = useState("");
+  // eslint-disable-next-line no-unused-vars
+  const [isValid, setIsValid] = useState(true);
+
+  
+  
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    // if(email.includes(validRegex)) setIsValid(false)
+    // eslint-disable-next-line no-unused-vars
+    const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email);
+    console.log(validRegex);
+
+    if(validRegex === false) { toast.error("Please provide a valid email address", {
+      duration: 3000,
+      position: "top-center",
+
+      className: "text-sm",
+    }); setIsValid(false)} else { console.log(email); toast.success("Email submited", {
+      duration: 3000,
+      position: "top-center",
+
+      className: "text-lg",
+    }); setIsValid(true)}
+    
+  }
+
   return (
-    <div className="w-1/2  m-auto text-center pt-10">
+    <div className="sm:w-1/2 w-80  m-auto text-center pt-10">
       <div className="flex items-center justify-center">
         <img src="./images/logo.svg" />
       </div>
@@ -8,19 +42,28 @@ function App() {
         We are launching <span className="text-grey-200 font-bold">soon!</span>
       </h1>
       <p className="text-sm mb-4">Subscribe and get notified</p>
-      <form>
+      <form className="sm:flex justify-center items-center gap-10 mb-10 flex-row">
+        <label>
         <input
-          type="text"
+          type="email"
+          required
           placeholder="Your email address..."
-          className="border-secondary-100 focus:outline-none border-2 py-2 px-4 rounded-full mb-20 focus:ring-secondary-100 ring-1 mr-3"
+          name="searchInput"
+          value={email}
+          onChange={e=>setEmail(e.target.value)}
+          className={`${!isValid ? "border-secondary-200 focus:ring-secondary-200" : ""} border-secondary-100 focus:ring-secondary-100  border-2 py-2 px-9 focus:outline-none rounded-full  ring-1 mr-3 `}
         />
-        <button>Notify Me</button>
+        
+        </label>
+        <button className="bg-primary mt-4 sm:mt-0 text-[#fff] px-6 py-2 rounded-full" onClick={handleSubmit}>Notify Me</button>
+   
       </form>
       <div>
         <img src="./images/illustration-dashboard.png" />
       </div>
       
       <Footer />
+      <Toaster />
     </div>
   );
 }
@@ -28,6 +71,11 @@ function App() {
 function Footer() {
   return (
     <footer className="mt-20">
+      <div className="flex items-center justify-center gap-10 mb-4">
+      <IoLogoFacebook className="text-primary" />
+      <IoLogoTwitter className="text-primary" />
+      <IoLogoInstagram className="text-primary" />
+      </div>
       <p className="text-grey-100 text-sm">&copy; Copyright Ping. All rights reserved.</p>
       <p className="text-sm">
         Challenge by{" "}
